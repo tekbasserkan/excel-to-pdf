@@ -1,0 +1,15 @@
+# Bağımlılık güncellemelerini otomatik öner
+# https://docs.github.com/en/code-security/dependabot
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/excel_to_pdf"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3

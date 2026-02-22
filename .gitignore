@@ -1,0 +1,13 @@
+.idea/
+.env
+logs/
+.DS_Store
+
+# Python / PyInstaller
+excel_to_pdf/build/
+excel_to_pdf/dist/
+*.pyc
+__pycache__/
+
+# Build output
+*.exe

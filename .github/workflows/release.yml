@@ -1,0 +1,63 @@
+# Release: Tag (v*) atandığında build edip GitHub Release oluşturur
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-excel-to-pdf:
+    name: Excel to PDF (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: excel_to_pdf
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build with PyInstaller
+        working-directory: excel_to_pdf
+        run: python -m PyInstaller --noconfirm excel_to_pdf.spec
+
+      - name: Zip Excel-to-PDF
+        run: |
+          $tag = "${{ github.ref_name }}"
+          Compress-Archive -Path "excel_to_pdf\dist\excel_to_pdf\*" -DestinationPath "excel_to_pdf_windows_$tag.zip" -Force
+
+      - name: Upload Excel-to-PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: excel-to-pdf-windows
+          path: "excel_to_pdf_windows_${{ github.ref_name }}.zip"
+
+  create-release:
+    name: Create GitHub Release
+    needs: [build-excel-to-pdf]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: false
+          generate_release_notes: true
+          files: artifacts/excel-to-pdf-windows/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
