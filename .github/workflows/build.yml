@@ -34,7 +34,7 @@ jobs:
           Compress-Archive -Path "excel_to_pdf\dist\excel_to_pdf\*" -DestinationPath "excel_to_pdf_windows.zip" -Force
 
       - name: Upload Excel-to-PDF artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: excel-to-pdf-windows
           path: excel_to_pdf_windows.zip
