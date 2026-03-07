@@ -19,6 +19,21 @@ pip install -r requirements.txt
 python excel_to_pdf.py
 ```
 
+## Unit Testler
+
+Unit testleri çalıştırmak için:
+
+```bash
+cd excel_to_pdf
+python -m unittest test_excel_to_pdf
+```
+
+Veya verbose modda:
+
+```bash
+python -m unittest test_excel_to_pdf -v
+```
+
 ## EXE üretimi (PyInstaller)
 
 ```bash
